@@ -35,13 +35,6 @@ except Exception as e:
 if day_data is not None and hour_data is not None:
     st.write("Data berhasil dimuat.")
 
-    # Tampilkan beberapa baris pertama dari data untuk verifikasi
-    st.subheader("Data Hari")
-    st.write(day_data.head())
-
-    st.subheader("Data Jam")
-    st.write(hour_data.head())
-
     # Judul Dashboard
     st.title("Dashboard Penyewaan Sepeda")
 
@@ -51,6 +44,7 @@ if day_data is not None and hour_data is not None:
         start_date = st.sidebar.date_input("Mulai Tanggal", day_data['dteday'].min())
         end_date = st.sidebar.date_input("Sampai Tanggal", day_data['dteday'].max())
 
+        # Filter data berdasarkan rentang tanggal
         filtered_data = day_data[(day_data['dteday'] >= pd.to_datetime(start_date)) & 
                                  (day_data['dteday'] <= pd.to_datetime(end_date))]
 
@@ -77,8 +71,12 @@ if day_data is not None and hour_data is not None:
         st.subheader("Penyewaan Berdasarkan Jam")
         selected_day = st.sidebar.selectbox("Pilih Hari untuk Analisis Penyewaan Berdasarkan Jam", day_data['dteday'].dt.date.unique())
         hour_filtered_data = hour_data[hour_data['dteday'] == selected_day]
-        hour_chart = hour_filtered_data.groupby('hr')['cnt'].sum()
-        st.bar_chart(hour_chart)
+        
+        if not hour_filtered_data.empty:
+            hour_chart = hour_filtered_data.groupby('hr')['cnt'].sum()
+            st.bar_chart(hour_chart)
+        else:
+            st.write("Tidak ada data penyewaan untuk hari yang dipilih.")
     else:
         st.write("Kolom 'dteday' tidak ditemukan dalam data.")
 else:
