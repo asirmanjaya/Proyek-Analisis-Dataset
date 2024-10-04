@@ -1,4 +1,4 @@
-# Dicoding Collection Dashboard ✨
+# Dashboard Penyewaan Sepeda
 
 ## Setup Environment - Anaconda
 ```
