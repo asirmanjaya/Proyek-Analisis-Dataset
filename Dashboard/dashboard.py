@@ -6,35 +6,6 @@ import streamlit as st
 day_data_url = 'https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-Dataset/main/Dashboard/day_data.csv'
 hour_data_url = 'https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-Dataset/main/Dashboard/hour_data.csv'
 
-# Coba untuk memuat file dari file lokal terlebih dahulu
-day_file_path = 'day_data.csv'
-hour_file_path = 'hour_data.csv'
-
-day_data = None
-hour_data = None
-
-try:
-    # Periksa akses file lokal
-    day_accessible = os.access(day_file_path, os.R_OK)
-    hour_accessible = os.access(hour_file_path, os.R_OK)
-
-    if day_accessible and hour_accessible:
-        day_data = pd.read_csv(day_file_path, parse_dates=['dteday'])
-        hour_data = pd.read_csv(hour_file_path, parse_dates=['dteday'])
-        st.write("File day_data.csv dan hour_data.csv dapat diakses dari lokal.")
-    else:
-        st.write("Izin file bermasalah. Memuat dari URL GitHub...")
-        # Memuat file dari URL jika file lokal tidak dapat diakses
-        day_data = pd.read_csv(day_data_url, parse_dates=['dteday'])
-        hour_data = pd.read_csv(hour_data_url, parse_dates=['dteday'])
-        st.write("File berhasil dimuat dari URL GitHub.")
-except Exception as e:
-    st.write("Terjadi kesalahan saat memuat file:", str(e))
-
-# Cek apakah data berhasil dimuat
-if day_data is not None and hour_data is not None:
-    st.write("Data berhasil dimuat.")
-
     # Judul Dashboard
     st.title("Dashboard Penyewaan Sepeda")
 
