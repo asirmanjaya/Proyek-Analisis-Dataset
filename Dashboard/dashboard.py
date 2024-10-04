@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Load dataset
-day_data = pd.read_csv('day_data.csv', parse_dates=['dteday'])
+day_data = pd.read_csv('path/to/day_data.csv', parse_dates=['dteday'])
 hour_data = pd.read_csv('hour_data.csv', parse_dates=['dteday'])
 
 st.title("Dashboard Penyewaan Sepeda")
