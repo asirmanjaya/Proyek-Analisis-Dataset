@@ -1,13 +1,59 @@
 import os
+import pandas as pd
 import streamlit as st
 
+# Tentukan URL mentah GitHub untuk file CSV
+day_data_url = 'https://github.com/asirmanjaya/Proyek-Analisis-Dataset/blob/main/Dashboard/day_data.csv'
+hour_data_url = 'https://github.com/asirmanjaya/Proyek-Analisis-Dataset/blob/main/Dashboard/hour_data.csv'
+
+# Coba untuk memuat file dari file lokal terlebih dahulu
 day_file_path = 'day_data.csv'
 hour_file_path = 'hour_data.csv'
 
-day_accessible = os.access(day_file_path, os.R_OK)
-hour_accessible = os.access(hour_file_path, os.R_OK)
+try:
+    # Periksa akses file lokal
+    day_accessible = os.access(day_file_path, os.R_OK)
+    hour_accessible = os.access(hour_file_path, os.R_OK)
 
-if day_accessible and hour_accessible:
-    st.write("File day_data.csv dan hour_data.csv dapat diakses.")
-else:
-    st.write("Izin file bermasalah. Periksa izin akses file.")
+    if day_accessible and hour_accessible:
+        day_data = pd.read_csv(day_file_path, parse_dates=['dteday'])
+        hour_data = pd.read_csv(hour_file_path, parse_dates=['dteday'])
+        st.write("File day_data.csv dan hour_data.csv dapat diakses dari lokal.")
+    else:
+        st.write("Izin file bermasalah. Memuat dari URL GitHub...")
+
+        # Memuat file dari URL jika file lokal tidak dapat diakses
+        day_data = pd.read_csv(day_data_url, parse_dates=['dteday'])
+        hour_data = pd.read_csv(hour_data_url, parse_dates=['dteday'])
+        st.write("File berhasil dimuat dari URL GitHub.")
+except Exception as e:
+    st.write("Terjadi kesalahan saat memuat file:", str(e))
+
+# Judul Dashboard
+st.title("Dashboard Penyewaan Sepeda")
+
+# Sidebar filter untuk memilih rentang tanggal
+st.sidebar.header("Filter Data")
+start_date = st.sidebar.date_input("Mulai Tanggal", day_data['dteday'].min())
+end_date = st.sidebar.date_input("Sampai Tanggal", day_data['dteday'].max())
+
+filtered_data = day_data[(day_data['dteday'] >= pd.to_datetime(start_date)) & 
+                         (day_data['dteday'] <= pd.to_datetime(end_date))]
+
+# Jumlah Penyewaan Sepeda per Hari
+st.subheader("Jumlah Penyewaan Sepeda per Hari")
+st.line_chart(filtered_data[['dteday', 'cnt']].set_index('dteday'))
+
+# Penyewaan Berdasarkan Musim
+st.subheader("Penyewaan Berdasarkan Musim")
+season_chart = filtered_data.groupby('season')['cnt'].sum()
+st.bar_chart(season_chart)
+
+# Penyewaan Berdasarkan Hari Kerja atau Libur
+st.subheader("Penyewaan Berdasarkan Hari Kerja atau Libur")
+holiday_workday_chart = filtered_data.groupby(['holiday', 'workingday'])['cnt'].sum().unstack()
+st.bar_chart(holiday_workday_chart)
+
+# Penyewaan Berdasarkan Kondisi Cuaca
+st.subheader("Penyewaan Berdasarkan Kondisi Cuaca")
+weather_chart = filtere
