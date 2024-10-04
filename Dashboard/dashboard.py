@@ -46,13 +46,7 @@ if 'dteday' in day_data.columns:
 
     # Penyewaan Berdasarkan Jam
     st.subheader("Penyewaan Berdasarkan Jam")
-    selected_day = st.sidebar.selectbox("Pilih Hari untuk Analisis Penyewaan Berdasarkan Jam", day_data['dteday'].dt.date.unique())
+    selected_day = st.sidebar.selectbox("Pilih Hari untuk Analisis Penyewaan Berdasarkan Jam", day_data['dteday'].unique())
     hour_filtered_data = hour_data[hour_data['dteday'] == selected_day]
-    
-    if not hour_filtered_data.empty:
-        hour_chart = hour_filtered_data.groupby('hr')['cnt'].sum()
-        st.bar_chart(hour_chart)
-    else:
-        st.write("Tidak ada data penyewaan untuk hari yang dipilih.")
-else:
-    st.write("Kolom 'dteday' tidak ditemukan dalam data.")
+    hour_chart = hour_filtered_data.groupby('hr')['cnt'].sum()
+    st.bar_chart(hour_chart)
