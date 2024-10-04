@@ -4,6 +4,7 @@ import os
 
 # Periksa apakah file ada sebelum membacanya
 if os.path.exists('day_data.csv') and os.path.exists('hour_data.csv'):
+    st.write("File day_data.csv dan hour_data.csv ditemukan!")
     # Load dataset
     day_data = pd.read_csv('day_data.csv', parse_dates=['dteday'])
     hour_data = pd.read_csv('hour_data.csv', parse_dates=['dteday'])
@@ -44,4 +45,4 @@ if os.path.exists('day_data.csv') and os.path.exists('hour_data.csv'):
     hour_chart = hour_filtered_data.groupby('hr')['cnt'].sum()
     st.bar_chart(hour_chart)
 else:
-    st.error("File CSV tidak ditemukan. Pastikan file `day_data.csv` dan `hour_data.csv` ada di direktori yang benar.")
+    st.write("File tidak ditemukan, periksa kembali path file Anda.")
