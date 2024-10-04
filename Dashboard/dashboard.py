@@ -9,9 +9,6 @@ hour_data_url = 'https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-D
 day_data = pd.read_csv(day_data_url, parse_dates=['dteday'])
 hour_data = pd.read_csv(hour_data_url, parse_dates=['dteday'])
 
-# Cek apakah data berhasil dimuat
-st.write("Data berhasil dimuat.")
-
 # Judul Dashboard
 st.title("Dashboard Penyewaan Sepeda")
 
