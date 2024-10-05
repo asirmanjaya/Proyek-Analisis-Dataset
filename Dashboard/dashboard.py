@@ -3,14 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Tentukan URL mentah GitHub untuk file CSV
-day_data_url = 'https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-Dataset/main/Dashboard/day_data.csv'
-hour_data_url = 'https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-Dataset/main/Dashboard/hour_data.csv'
-
-# Memuat file dari URL GitHub
-day_data = pd.read_csv(day_data_url, parse_dates=['dteday'])
-hour_data = pd.read_csv(hour_data_url, parse_dates=['dteday'])
-
+# Load the data from the provided URLs
+day_data = pd.read_csv('https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-Dataset/main/Dashboard/day_data.csv')
+hour_data = pd.read_csv('https://raw.githubusercontent.com/asirmanjaya/Proyek-Analisis-Dataset/main/Dashboard/hour_data.csv')
 
 # Set page layout and title
 st.set_page_config(layout="wide", initial_sidebar_state='expanded')
@@ -29,7 +24,7 @@ weekday_avg_cnt = day_data.pivot_table(values='cnt', index='weekday', aggfunc='m
 
 with st.container():
     plt.figure(figsize=(10,6))
-    sns.barplot(x=weekday_avg_cnt.index, y=weekday_avg_cnt['cnt'], palette='Blues')
+    sns.barplot(x=weekday_avg_cnt.index, y=weekday_avg_cnt, palette='Blues')
     plt.title('Rata-rata Penyewaan Sepeda Berdasarkan Hari dalam Seminggu', fontsize=14)
     plt.xlabel('Hari dalam Seminggu (0 = Minggu, 6 = Sabtu)', fontsize=12)
     plt.ylabel('Rata-rata Penyewaan Sepeda', fontsize=12)
